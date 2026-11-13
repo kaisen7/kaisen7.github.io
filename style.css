@@ -50,13 +50,21 @@ p + p{margin-top:14px}
 .row .sub{font-size:.92rem;color:var(--muted)}
 
 /* projetos */
-.proj{display:block;text-decoration:none;padding:20px 0}
+.proj{display:block;padding:20px 0}
 .proj + .proj{border-top:1px solid var(--line)}
 .proj-head{display:flex;justify-content:space-between;align-items:baseline;gap:16px}
 .proj h3{font-size:1rem;font-weight:500}
+.proj h3 a{text-decoration:none;transition:color .2s}
+/* o link do título cobre o cartão inteiro, então dá pra clicar em qualquer parte */
+.proj{position:relative}
+.proj h3 a::after{content:"";position:absolute;inset:0}
 .proj .arrow{color:var(--faint);transition:.2s}
 .proj:hover .arrow{color:var(--accent);transform:translate(2px,-2px)}
-.proj:hover h3{color:var(--accent)}
+.proj:hover h3 a{color:var(--accent)}
+.proj h3 a:focus-visible{outline:2px solid var(--accent);outline-offset:4px;border-radius:2px}
+.proj-links{position:relative;z-index:1;display:flex;gap:18px;margin-top:10px;font-size:.85rem;font-weight:500}
+.proj-links a{text-decoration:none;border-bottom:1px solid var(--line);padding-bottom:1px;transition:.2s}
+.proj-links a:hover{color:var(--accent);border-color:var(--accent)}
 .proj p{font-size:.94rem;color:var(--muted);margin-top:4px}
 .proj .stack{font-size:.82rem;color:var(--faint);margin-top:8px}
 

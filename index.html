@@ -35,8 +35,8 @@
       <span class="pt">Kauã de Oliveira Santos.<br><span>Estudante de desenvolvimento de sistemas.</span></span>
       <span class="en">Kauã de Oliveira Santos.<br><span>Systems development student.</span></span>
     </h1>
-    <p class="lead pt">Crio páginas para a web com HTML, CSS e JavaScript e publico meus projetos no GitHub. Busco um estágio em tecnologia para aprender na prática e contribuir com o time.</p>
-    <p class="lead en">I build web pages with HTML, CSS and JavaScript and publish my projects on GitHub. I'm looking for a tech internship where I can learn hands-on and contribute to the team.</p>
+    <p class="lead pt">Crio sites com HTML, CSS e JavaScript e pequenas ferramentas em Python, e publico meus projetos no GitHub. Busco um estágio em tecnologia para aprender na prática e contribuir com o time.</p>
+    <p class="lead en">I build websites with HTML, CSS and JavaScript and small tools in Python, and publish my projects on GitHub. I'm looking for a tech internship where I can learn hands-on and contribute to the team.</p>
     <div class="links">
       <a href="https://github.com/kaisen7" target="_blank" rel="noopener">GitHub</a>
             <a href="https://www.linkedin.com/in/kaisen7/" target="_blank" rel="noopener">LinkedIn</a>
@@ -59,24 +59,49 @@
 
   <section class="reveal">
     <h2><span class="pt">Projetos</span><span class="en">Projects</span></h2>
-    <a class="proj" href="https://github.com/kaisen7" target="_blank" rel="noopener">
-      <div class="proj-head"><h3><span class="pt">Site para academia</span><span class="en">Gym website</span></h3><span class="arrow">↗</span></div>
+    <!-- Cada projeto tem o link principal no título e, embaixo, os links de site e código -->
+    <article class="proj">
+      <div class="proj-head"><h3><a href="https://kaisen7.github.io/painel-dolar/" target="_blank" rel="noopener">Painel do Dólar</a></h3><span class="arrow">↗</span></div>
+      <p class="pt">A cotação do dólar ao vivo num letreiro de câmbio em 3D, com plaquinhas que viram. Tem histórico em gráfico, conversor e funciona mesmo se a API cair.</p>
+      <p class="en">The live US dollar rate on a 3D currency-exchange board with flipping tiles. Includes a history chart, a converter and keeps working if the API goes down.</p>
+      <div class="stack">JavaScript · Three.js · GSAP · API</div>
+      <div class="proj-links"><a href="https://kaisen7.github.io/painel-dolar/" target="_blank" rel="noopener"><span class="pt">ver site</span><span class="en">live site</span></a><a href="https://github.com/kaisen7/painel-dolar" target="_blank" rel="noopener"><span class="pt">código</span><span class="en">code</span></a></div>
+    </article>
+    <article class="proj">
+      <div class="proj-head"><h3><a href="https://kaisen7.github.io/simulador-investimento-dolar/" target="_blank" rel="noopener"><span class="pt">Simulador de investimento em dólar</span><span class="en">US dollar investment simulator</span></a></h3><span class="arrow">↗</span></div>
+      <p class="pt">Calcula quanto um aporte mensal em reais vira em dólar com juros compostos, com gráfico desenhado em Canvas.</p>
+      <p class="en">Shows how a monthly deposit in reais grows in dollars with compound interest, with a chart drawn on Canvas.</p>
+      <div class="stack">HTML · CSS · JavaScript · Canvas</div>
+      <div class="proj-links"><a href="https://kaisen7.github.io/simulador-investimento-dolar/" target="_blank" rel="noopener"><span class="pt">ver site</span><span class="en">live site</span></a><a href="https://github.com/kaisen7/simulador-investimento-dolar" target="_blank" rel="noopener"><span class="pt">código</span><span class="en">code</span></a></div>
+    </article>
+    <article class="proj">
+      <div class="proj-head"><h3><a href="https://github.com/kaisen7/vendas-em-foco" target="_blank" rel="noopener">Vendas em Foco</a></h3><span class="arrow">↗</span></div>
+      <p class="pt">Lê um arquivo CSV de vendas e gera um relatório em HTML com faturamento, produtos mais vendidos e evolução por dia.</p>
+      <p class="en">Reads a sales CSV file and builds an HTML report with revenue, top products and daily totals.</p>
+      <div class="stack">Python · CSV · <span class="pt">testes</span><span class="en">tests</span></div>
+      <div class="proj-links"><a href="https://github.com/kaisen7/vendas-em-foco" target="_blank" rel="noopener"><span class="pt">código</span><span class="en">code</span></a></div>
+    </article>
+    <article class="proj">
+      <div class="proj-head"><h3><a href="https://github.com/kaisen7/vaga-track" target="_blank" rel="noopener">Vaga Track</a></h3><span class="arrow">↗</span></div>
+      <p class="pt">Organizador de candidaturas a vagas no terminal: cadastra, atualiza a etapa, filtra e exporta para CSV.</p>
+      <p class="en">A command-line job application tracker: add, update the stage, filter and export to CSV.</p>
+      <div class="stack">Python · SQLite · <span class="pt">testes</span><span class="en">tests</span></div>
+      <div class="proj-links"><a href="https://github.com/kaisen7/vaga-track" target="_blank" rel="noopener"><span class="pt">código</span><span class="en">code</span></a></div>
+    </article>
+    <article class="proj">
+      <div class="proj-head"><h3><a href="https://github.com/kaisen7/triagem-texto" target="_blank" rel="noopener">Triagem Texto</a></h3><span class="arrow">↗</span></div>
+      <p class="pt">Classifica mensagens de atendimento em entrega, pagamento ou produto, com um Naive Bayes feito do zero, sem bibliotecas.</p>
+      <p class="en">Sorts customer messages into delivery, payment or product with a Naive Bayes classifier written from scratch.</p>
+      <div class="stack">Python · <span class="pt">aprendizado de máquina</span><span class="en">machine learning</span> · <span class="pt">testes</span><span class="en">tests</span></div>
+      <div class="proj-links"><a href="https://github.com/kaisen7/triagem-texto" target="_blank" rel="noopener"><span class="pt">código</span><span class="en">code</span></a></div>
+    </article>
+    <article class="proj">
+      <div class="proj-head"><h3><a href="https://kaisen7.github.io/k2-fitness/" target="_blank" rel="noopener"><span class="pt">Site para academia</span><span class="en">Gym website</span></a></h3><span class="arrow">↗</span></div>
       <p class="pt">Página de demonstração para uma academia, com apresentação, serviços e contato, responsiva no celular.</p>
       <p class="en">Demo website for a gym, with an intro, services and contact section, responsive on mobile.</p>
       <div class="stack">HTML · CSS</div>
-    </a>
-    <a class="proj" href="https://github.com/kaisen7" target="_blank" rel="noopener">
-      <div class="proj-head"><h3><span class="pt">Página de links</span><span class="en">Link-in-bio page</span></h3><span class="arrow">↗</span></div>
-      <p class="pt">Página no estilo "link na bio" que reúne meus links num só lugar.</p>
-      <p class="en">A "link in bio" page that gathers all my links in one place.</p>
-      <div class="stack">HTML · CSS · GitHub Pages</div>
-    </a>
-    <a class="proj" href="#">
-      <div class="proj-head"><h3><span class="pt">Este site</span><span class="en">This website</span></h3><span class="arrow">↗</span></div>
-      <p class="pt">Meu portfólio pessoal, em português e inglês, com tema claro e escuro automático.</p>
-      <p class="en">My personal portfolio, in Portuguese and English, with automatic light and dark themes.</p>
-      <div class="stack">HTML · CSS · JavaScript</div>
-    </a>
+      <div class="proj-links"><a href="https://kaisen7.github.io/k2-fitness/" target="_blank" rel="noopener"><span class="pt">ver site</span><span class="en">live site</span></a><a href="https://github.com/kaisen7/k2-fitness" target="_blank" rel="noopener"><span class="pt">código</span><span class="en">code</span></a></div>
+    </article>
   </section>
 
   <section class="reveal">
