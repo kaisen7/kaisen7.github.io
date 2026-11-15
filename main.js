@@ -258,7 +258,9 @@ function iniciarInterface() {
   cenas.forEach((secao, i) => {
     const atualizar = (self) => {
       progresso[i] = self.progress;
-      estado.cenaAlvo = progresso.reduce((soma, p) => soma + p, 0);
+      // Trava: com a página no topo (rolou menos de 40px), o teclado fica SEMPRE montado.
+      // Protege contra celulares em que a barra do navegador muda a altura da tela.
+      estado.cenaAlvo = window.scrollY < 40 ? 0 : progresso.reduce((soma, p) => soma + p, 0);
     };
     ScrollTrigger.create({
       trigger: secao,
