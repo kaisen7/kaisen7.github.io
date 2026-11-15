@@ -31,7 +31,7 @@ let RoomEnvironment;
 
 // A pessoa pediu ao sistema menos movimento?
 const REDUZ_MOVIMENTO = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-// Celular ou tela pequena: menos teclas e 3D mais leve.
+// Celular ou tela pequena: 3D mais leve (sem antialias, menos resolução e menos detalhe).
 const CELULAR = window.matchMedia('(max-width: 768px), (pointer: coarse)').matches;
 
 // GSAP vem dos <script defer> do HTML e fica em "window".
@@ -132,7 +132,7 @@ const vao = (largura) => t(null, largura);
 const varias = (texto) => [...texto].map((letra) => t(letra));
 const lista = (...rotulos) => rotulos.map((r) => t(r));
 
-// Computador: layout TKL de 87 teclas, igual ao do K552
+// Layout TKL de 87 teclas, igual ao do K552 (usado no computador e no celular)
 // (sem teclado numérico, com fileira F e o bloco de setas/navegação à direita)
 const LAYOUT_K552 = [
   {
@@ -151,14 +151,6 @@ const LAYOUT_K552 = [
              t('alt', 1.25), t('fn', 1.25), t('menu', 1.25), t('ctrl', 1.25),
              vao(0.25), ...lista('←', '↓', '→')],
   },
-];
-
-// Celular: versão compacta com 36 teclas (só números e letras), para não pesar
-const LAYOUT_COMPACTO = [
-  { espaco: 0, teclas: varias('1234567890') },
-  { espaco: 0, teclas: varias('QWERTYUIOP') },
-  { espaco: 0, teclas: [vao(0.5), ...varias('ASDFGHJKL')] },
-  { espaco: 0, teclas: [vao(1.5), ...varias('ZXCVBNM')] },
 ];
 
 // Tecla física do computador (e.key) -> rótulo da tecla 3D (para o efeito de digitar)
@@ -362,7 +354,7 @@ async function iniciar3D() {
   })();
 
   // 5.4 Montagem das teclas
-  const layout = CELULAR ? LAYOUT_COMPACTO : LAYOUT_K552;
+  const layout = LAYOUT_K552;
   const larguraTeclado = Math.max(...layout.map((linha) => linha.teclas.reduce((s, k) => s + k.largura, 0)));
   // posição Z de cada linha (soma os vãos entre a fileira F e o resto)
   let zAtual = 0;
@@ -391,7 +383,7 @@ async function iniciar3D() {
   // Desenha a "legenda" (a letra) em branco num <canvas> 2D.
   // A cor RGB é aplicada depois pelo material, então a mesma textura serve para qualquer cor.
   function criarLegenda(texto, largura, prof) {
-    const px = CELULAR ? 64 : 128;
+    const px = CELULAR ? 96 : 128; // no celular, textura um pouco menor (economiza memória)
     const c = document.createElement('canvas');
     c.width = Math.round(px * (largura / prof));
     c.height = px;
@@ -543,7 +535,7 @@ async function iniciar3D() {
 
     // Tamanho do teclado na abertura: cabe na largura e na altura
     const escala = Math.min(
-      (larguraVisivel * (retrato ? 0.9 : 0.66)) / larguraTeclado,
+      (larguraVisivel * (retrato ? 0.93 : 0.66)) / larguraTeclado,
       (alturaVisivel * 0.42) / (profundidade * 0.75)
     );
     const ab = arrumacao.abertura;
@@ -553,8 +545,8 @@ async function iniciar3D() {
 
     // No celular o teclado do contato fica na parte de baixo, entre os links e o rodapé
     const ct = arrumacao.contato;
-    ct.escala = escala * (retrato ? 0.7 : 0.5);
-    ct.centro.set(retrato ? 0 : larguraVisivel * 0.33, alturaVisivel * (retrato ? -0.3 : 0.25), retrato ? -3 : -2);
+    ct.escala = escala * (retrato ? 0.75 : 0.5);
+    ct.centro.set(retrato ? 0 : larguraVisivel * 0.33, alturaVisivel * (retrato ? -0.23 : 0.25), retrato ? -3 : -2);
     ct.rot.set(0.8, retrato ? 0 : -0.4, retrato ? 0 : 0.12);
   }
 
