@@ -1,203 +1,245 @@
-<!DOCTYPE html>
-<html lang="pt-BR" data-lang="pt">
+<!doctype html>
+<html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Kauã de Oliveira Santos | Desenvolvimento de Sistemas</title>
-<meta name="description" content="Kauã de Oliveira Santos, estudante de Análise e Desenvolvimento de Sistemas, em busca de estágio em tecnologia.">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%2318181b'/><text x='50' y='70' font-size='60' font-family='Arial' font-weight='700' fill='white' text-anchor='middle'>K</text></svg>">
-<meta property="og:title" content="Kauã de Oliveira Santos | Portfólio">
-<meta property="og:description" content="Estudante de Análise e Desenvolvimento de Sistemas em busca de estágio em tecnologia.">
-<meta property="og:url" content="https://kaisen7.github.io">
-<meta property="og:type" content="website">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>kaisen7 — Kauã de Oliveira Santos</title>
+  <meta name="description" content="Portfólio de Kauã de Oliveira Santos (kaisen7), desenvolvedor web em Petrópolis (RJ). Sites, landing pages e projetos com 3D.">
+  <!-- Cor da barra do navegador no celular (o main.js troca conforme a seção) -->
+  <meta name="theme-color" content="#ECECEC">
+
+  <!--
+    TEMA (claro/escuro): decidido AQUI, antes da página aparecer, para não
+    piscar a cor errada. Ordem de prioridade:
+    1. o que a pessoa escolheu no botão (fica salvo no navegador)
+    2. o modo do celular/PC (prefers-color-scheme)
+  -->
+  <script>
+    (function () {
+      var salvo = null;
+      try { salvo = localStorage.getItem('tema'); } catch (e) {}
+      var sistemaEscuro = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      var tema = salvo === 'claro' || salvo === 'escuro' ? salvo : (sistemaEscuro ? 'escuro' : 'claro');
+      document.documentElement.setAttribute('data-tema', tema);
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', tema === 'escuro' ? '#0A0A0A' : '#ECECEC');
+    })();
+  </script>
+  <!-- Ícone da aba: um quadradinho vermelho com "k7", feito em SVG direto aqui -->
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23E10600'/%3E%3Ctext x='4' y='23' font-family='monospace' font-weight='700' font-size='17' fill='%23fff'%3Ek7%3C/text%3E%3C/svg%3E">
+
+  <!-- Fontes: Bricolage Grotesque (títulos e textos) e Geist Mono (detalhes "de código") -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,200..800&family=Geist+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+
+  <!--
+    "Import map": diz ao navegador onde achar o Three.js quando o main.js
+    escrever `import ... from 'three'`. Assim não precisamos de npm nem de build.
+  -->
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+      }
+    }
+  </script>
+
+  <!-- GSAP + ScrollTrigger (animações ligadas à rolagem). "defer" = baixa sem travar a página. -->
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <!-- "defer" garante a ordem: GSAP, ScrollTrigger e só depois o main.js -->
+  <script defer src="main.js"></script>
 </head>
 <body>
-<div class="wrap">
 
-  <div class="top">
-    <a href="#" class="name-sm">Kauã Santos</a>
-    <div class="lang" role="group" aria-label="Idioma / Language">
-      <button type="button" data-set="pt" aria-pressed="true">PT</button>
-      <button type="button" data-set="en" aria-pressed="false">EN</button>
-    </div>
+  <!-- ===== Tela de carregamento ===== -->
+  <div class="loader" id="loader" aria-hidden="true">
+    <span class="loader-marca">kaisen7</span>
+    <div class="loader-barra"><span id="loader-progresso"></span></div>
+    <span class="loader-texto" id="loader-texto">carregando</span>
   </div>
 
-  <header class="hero">
-    <div class="status"><i></i>
-      <span class="pt">Disponível para estágio em 2027</span>
-      <span class="en">Open to internships in 2027</span>
-    </div>
-    <h1>
-      <span class="pt">Kauã de Oliveira Santos.<br><span>Estudante de desenvolvimento de sistemas.</span></span>
-      <span class="en">Kauã de Oliveira Santos.<br><span>Systems development student.</span></span>
-    </h1>
-    <p class="lead pt">Crio sites com HTML, CSS e JavaScript e pequenas ferramentas em Python, e publico meus projetos no GitHub. Busco um estágio em tecnologia para aprender na prática e contribuir com o time.</p>
-    <p class="lead en">I build websites with HTML, CSS and JavaScript and small tools in Python, and publish my projects on GitHub. I'm looking for a tech internship where I can learn hands-on and contribute to the team.</p>
-    <div class="links">
-      <a href="https://github.com/kaisen7" target="_blank" rel="noopener">GitHub</a>
-            <a href="https://www.linkedin.com/in/kaisen7/" target="_blank" rel="noopener">LinkedIn</a>
-      <a href="Curriculo_Kaua_Avenue_2027.pdf" target="_blank" rel="noopener"><span class="pt">Currículo</span><span class="en">Resume</span></a>
-      <a href="#contato"><span class="pt">Contato</span><span class="en">Contact</span></a>
-    </div>
+  <!-- ===== Canvas do 3D: fica fixo atrás de todo o conteúdo ===== -->
+  <canvas id="cena" aria-hidden="true"></canvas>
+
+  <!-- ===== Topo fixo (usa mix-blend-mode para se adaptar a qualquer fundo) ===== -->
+  <header class="topo">
+    <a class="topo-nome" href="#abertura">Kauã de Oliveira Santos, desenvolvedor</a>
+    <nav class="topo-nav" aria-label="Seções">
+      <a href="#sobre">sobre</a>
+      <a href="#projetos">projetos</a>
+      <a href="#servicos">serviços</a>
+      <a href="#contato">contato</a>
+    </nav>
+    <!-- Botão de tema: a opção ativa fica forte, a outra apagadinha -->
+    <button class="tema-botao" id="tema-botao" type="button" aria-label="Trocar tema">
+      <span data-opcao="claro">claro</span> / <span data-opcao="escuro">escuro</span>
+    </button>
   </header>
 
-  <section class="reveal">
-    <h2><span class="pt">Sobre</span><span class="en">About</span></h2>
-    <div class="pt">
-      <p>Sou de Petrópolis (RJ) e estou no 2º semestre de Análise e Desenvolvimento de Sistemas na Estácio, com formatura prevista para dezembro de 2028.</p>
-      <p class="muted">Antes da tecnologia, trabalhei com atendimento e vendas. Foi onde aprendi a ouvir o cliente, me comunicar com clareza e manter tudo organizado, e é assim que encaro o desenvolvimento: entender bem o problema antes de escrever código.</p>
-    </div>
-    <div class="en">
-      <p>I'm from Petrópolis, Brazil, and I'm in my 2nd semester of Systems Analysis and Development at Estácio, graduating in December 2028.</p>
-      <p class="muted">Before tech, I worked in customer service and sales. That's where I learned to listen to customers, communicate clearly and stay organized, and it's how I approach development: understand the problem well before writing code.</p>
-    </div>
-  </section>
+  <main>
+    <!--
+      Cada <section> tem:
+      - data-fundo:  cor de fundo do site quando ela estiver na tela (tema claro)
+      - data-fundo-escuro: a mesma coisa, mas no tema escuro (se não tiver, usa data-fundo)
+      - data-brilho: "1" = as teclas ciano acendem (seções escuras)
+      - data-cena:   marca as seções que mudam a arrumação das teclas
+    -->
 
-  <section class="reveal">
-    <h2><span class="pt">Projetos</span><span class="en">Projects</span></h2>
-    <!-- Cada projeto tem o link principal no título e, embaixo, os links de site e código -->
-    <article class="proj">
-      <div class="proj-head"><h3><a href="https://kaisen7.github.io/painel-dolar/" target="_blank" rel="noopener">Painel do Dólar</a></h3><span class="arrow">↗</span></div>
-      <p class="pt">A cotação do dólar ao vivo num letreiro de câmbio em 3D, com plaquinhas que viram. Tem histórico em gráfico, conversor e funciona mesmo se a API cair.</p>
-      <p class="en">The live US dollar rate on a 3D currency-exchange board with flipping tiles. Includes a history chart, a converter and keeps working if the API goes down.</p>
-      <div class="stack">JavaScript · Three.js · GSAP · API</div>
-      <div class="proj-links"><a href="https://kaisen7.github.io/painel-dolar/" target="_blank" rel="noopener"><span class="pt">ver site</span><span class="en">live site</span></a><a href="https://github.com/kaisen7/painel-dolar" target="_blank" rel="noopener"><span class="pt">código</span><span class="en">code</span></a></div>
-    </article>
-    <article class="proj">
-      <div class="proj-head"><h3><a href="https://kaisen7.github.io/simulador-investimento-dolar/" target="_blank" rel="noopener"><span class="pt">Simulador de investimento em dólar</span><span class="en">US dollar investment simulator</span></a></h3><span class="arrow">↗</span></div>
-      <p class="pt">Calcula quanto um aporte mensal em reais vira em dólar com juros compostos, com gráfico desenhado em Canvas.</p>
-      <p class="en">Shows how a monthly deposit in reais grows in dollars with compound interest, with a chart drawn on Canvas.</p>
-      <div class="stack">HTML · CSS · JavaScript · Canvas</div>
-      <div class="proj-links"><a href="https://kaisen7.github.io/simulador-investimento-dolar/" target="_blank" rel="noopener"><span class="pt">ver site</span><span class="en">live site</span></a><a href="https://github.com/kaisen7/simulador-investimento-dolar" target="_blank" rel="noopener"><span class="pt">código</span><span class="en">code</span></a></div>
-    </article>
-    <article class="proj">
-      <div class="proj-head"><h3><a href="https://github.com/kaisen7/vendas-em-foco" target="_blank" rel="noopener">Vendas em Foco</a></h3><span class="arrow">↗</span></div>
-      <p class="pt">Lê um arquivo CSV de vendas e gera um relatório em HTML com faturamento, produtos mais vendidos e evolução por dia.</p>
-      <p class="en">Reads a sales CSV file and builds an HTML report with revenue, top products and daily totals.</p>
-      <div class="stack">Python · CSV · <span class="pt">testes</span><span class="en">tests</span></div>
-      <div class="proj-links"><a href="https://github.com/kaisen7/vendas-em-foco" target="_blank" rel="noopener"><span class="pt">código</span><span class="en">code</span></a></div>
-    </article>
-    <article class="proj">
-      <div class="proj-head"><h3><a href="https://github.com/kaisen7/vaga-track" target="_blank" rel="noopener">Vaga Track</a></h3><span class="arrow">↗</span></div>
-      <p class="pt">Organizador de candidaturas a vagas no terminal: cadastra, atualiza a etapa, filtra e exporta para CSV.</p>
-      <p class="en">A command-line job application tracker: add, update the stage, filter and export to CSV.</p>
-      <div class="stack">Python · SQLite · <span class="pt">testes</span><span class="en">tests</span></div>
-      <div class="proj-links"><a href="https://github.com/kaisen7/vaga-track" target="_blank" rel="noopener"><span class="pt">código</span><span class="en">code</span></a></div>
-    </article>
-    <article class="proj">
-      <div class="proj-head"><h3><a href="https://github.com/kaisen7/triagem-texto" target="_blank" rel="noopener">Triagem Texto</a></h3><span class="arrow">↗</span></div>
-      <p class="pt">Classifica mensagens de atendimento em entrega, pagamento ou produto, com um Naive Bayes feito do zero, sem bibliotecas.</p>
-      <p class="en">Sorts customer messages into delivery, payment or product with a Naive Bayes classifier written from scratch.</p>
-      <div class="stack">Python · <span class="pt">aprendizado de máquina</span><span class="en">machine learning</span> · <span class="pt">testes</span><span class="en">tests</span></div>
-      <div class="proj-links"><a href="https://github.com/kaisen7/triagem-texto" target="_blank" rel="noopener"><span class="pt">código</span><span class="en">code</span></a></div>
-    </article>
-    <article class="proj">
-      <div class="proj-head"><h3><a href="https://kaisen7.github.io/k2-fitness/" target="_blank" rel="noopener"><span class="pt">Site para academia</span><span class="en">Gym website</span></a></h3><span class="arrow">↗</span></div>
-      <p class="pt">Página de demonstração para uma academia, com apresentação, serviços e contato, responsiva no celular.</p>
-      <p class="en">Demo website for a gym, with an intro, services and contact section, responsive on mobile.</p>
-      <div class="stack">HTML · CSS</div>
-      <div class="proj-links"><a href="https://kaisen7.github.io/k2-fitness/" target="_blank" rel="noopener"><span class="pt">ver site</span><span class="en">live site</span></a><a href="https://github.com/kaisen7/k2-fitness" target="_blank" rel="noopener"><span class="pt">código</span><span class="en">code</span></a></div>
-    </article>
-  </section>
+    <!-- 1. ABERTURA -->
+    <section id="abertura" class="secao abertura" data-fundo="#ECECEC" data-fundo-escuro="#0A0A0A" data-brilho="0">
+      <div class="abertura-info">
+        <span>portfólio / 2026</span>
+        <span>Petrópolis, RJ</span>
+        <span>role ↓</span>
+      </div>
+      <h1 class="titulo" aria-label="kaisen7">
+        <!-- Cada letra num <span> para animar uma por uma -->
+        <span class="titulo-medida" aria-hidden="true"><span class="letra">k</span><span class="letra">a</span><span class="letra">i</span><span class="letra">s</span><span class="letra">e</span><span class="letra">n</span><span class="letra letra--destaque">7</span></span>
+      </h1>
+    </section>
 
-  <section class="reveal">
-    <h2><span class="pt">Habilidades</span><span class="en">Skills</span></h2>
-    <div class="group">
-      <div class="group-title"><span class="pt">Tecnologia</span><span class="en">Technical</span></div>
-      <div class="chips">
-        <span class="chip">HTML</span><span class="chip">CSS</span><span class="chip">JavaScript</span>
-        <span class="chip">Python</span><span class="chip">Git</span><span class="chip">GitHub Pages</span>
-        <span class="chip learn">SQL · <span class="pt">estudando</span><span class="en">learning</span></span>
-      </div>
-    </div>
-    <div class="group">
-      <div class="group-title"><span class="pt">Comportamentais</span><span class="en">Soft skills</span></div>
-      <div class="chips pt">
-        <span class="chip">Comunicação</span><span class="chip">Atendimento ao cliente</span>
-        <span class="chip">Organização</span><span class="chip">Trabalho em equipe</span>
-      </div>
-      <div class="chips en">
-        <span class="chip">Communication</span><span class="chip">Customer service</span>
-        <span class="chip">Organization</span><span class="chip">Teamwork</span>
-      </div>
-    </div>
-  </section>
-  <section class="reveal">
-    <h2><span class="pt">Estudando agora</span><span class="en">Currently learning</span></h2>
-    <div class="row">
-      <div class="when">SQL</div>
-      <div>
-        <h3><span class="pt">Banco de dados</span><span class="en">Databases</span></h3>
-        <div class="sub"><span class="pt">Consultas, filtros e relacionamento entre tabelas</span><span class="en">Queries, filters and table relationships</span></div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="when">JavaScript</div>
-      <div>
-        <h3><span class="pt">Interatividade na web</span><span class="en">Web interactivity</span></h3>
-        <div class="sub"><span class="pt">Manipulação do DOM, eventos e funções</span><span class="en">DOM manipulation, events and functions</span></div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="when"><span class="pt">Inglês</span><span class="en">English</span></div>
-      <div>
-        <h3><span class="pt">Curso em andamento</span><span class="en">Ongoing course</span></h3>
-        <div class="sub"><span class="pt">Nível intermediário, praticando leitura de documentação</span><span class="en">Intermediate level, practicing by reading documentation</span></div>
-      </div>
-    </div>
-  </section>
-  <section class="reveal">
-    <h2><span class="pt">Trajetória</span><span class="en">Experience &amp; education</span></h2>
-    <div class="row">
-      <div class="when"><span class="pt">2026 a 2028</span><span class="en">2026 – 2028</span></div>
-      <div>
-        <h3><span class="pt">Análise e Desenvolvimento de Sistemas</span><span class="en">Systems Analysis and Development</span></h3>
-        <div class="sub"><span class="pt">Estácio · Tecnólogo, em andamento</span><span class="en">Estácio · Associate degree, in progress</span></div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="when"><span class="pt">Out/2024 a Jan/2025</span><span class="en">Oct 2024 – Jan 2025</span></div>
-      <div>
-        <h3><span class="pt">Atendimento e vendas</span><span class="en">Customer service &amp; sales</span></h3>
-        <div class="sub"><span class="pt">Street Store · Freelancer</span><span class="en">Street Store · Freelance</span></div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="when">2025</div>
-      <div>
-        <h3><span class="pt">Ensino médio completo</span><span class="en">High school diploma</span></h3>
-        <div class="sub"><span class="pt">Também concluí o curso de Informática Básica</span><span class="en">Also completed a Basic Computing course</span></div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="when"><span class="pt">Idiomas</span><span class="en">Languages</span></div>
-      <div>
-        <h3><span class="pt">Português nativo · Inglês intermediário</span><span class="en">Portuguese (native) · English (intermediate)</span></h3>
-        <div class="sub"><span class="pt">Curso de inglês em andamento</span><span class="en">Currently taking English classes</span></div>
-      </div>
-    </div>
-  </section>
+    <!-- 2. SOBRE MIM -->
+    <section id="sobre" class="secao escura sobre" data-cena data-fundo="#0A0A0A" data-fundo-escuro="#141414" data-brilho="1">
+      <p class="rotulo" data-revelar>(01) sobre</p>
+      <p class="sobre-texto" data-revelar>
+        Sou estudante de <em>Análise e Desenvolvimento de Sistemas</em> na Estácio,
+        em Petrópolis (RJ). Crio sites e projetos web — e gosto quando eles têm
+        algo que faz a pessoa parar de rolar.
+      </p>
+      <dl class="dados" data-revelar>
+        <div><dt>curso</dt><dd>ADS — Estácio</dd></div>
+        <div><dt>base</dt><dd>Petrópolis, RJ</dd></div>
+        <div><dt>foco</dt><dd>Sites, front-end, 3D na web</dd></div>
+      </dl>
+    </section>
 
-  <section class="contact reveal" id="contato">
-    <h2><span class="pt">Contato</span><span class="en">Contact</span></h2>
-    <h3><span class="pt">Vamos conversar?</span><span class="en">Let's talk.</span></h3>
-    <p class="muted pt">Estou em busca de estágio em tecnologia. Me manda um e-mail.</p>
-    <p class="muted en">I'm looking for a tech internship. Feel free to send me an email.</p>
-    <a class="mail" href="mailto:kauadeoliveirasantosx7@gmail.com">kauadeoliveirasantosx7@gmail.com</a>
-        <div class="links">
-      <a href="https://www.linkedin.com/in/kaisen7/" target="_blank" rel="noopener">LinkedIn</a>
-      <a href="https://github.com/kaisen7" target="_blank" rel="noopener">GitHub</a>
-      <a href="Curriculo_Kaua_Avenue_2027.pdf" target="_blank" rel="noopener"><span class="pt">Currículo</span><span class="en">Resume</span></a>
-    </div>
-  </section>
+    <!-- 3. PROJETOS -->
+    <section id="projetos" class="secao escura projetos" data-cena data-fundo="#0A0A0A" data-fundo-escuro="#141414" data-brilho="1">
+      <p class="rotulo" data-revelar>(02) projetos</p>
 
-  <footer>© 2026 Kauã de Oliveira Santos</footer>
-</div>
+      <ol class="lista-projetos">
+        <li class="projeto" data-revelar>
+          <span class="projeto-num">01</span>
+          <div class="projeto-corpo">
+            <h2 class="projeto-titulo">Painel do Dólar</h2>
+            <p class="projeto-desc">A cotação do dólar ao vivo num letreiro de casa de câmbio em 3D, com plaquinhas que viram, histórico do dia e conversor.</p>
+            <p class="projeto-tags">Three.js · GSAP · API de câmbio</p>
+          </div>
+          <div class="projeto-links">
+            <a href="https://kaisen7.github.io/painel-dolar/" target="_blank" rel="noopener">ver projeto ↗</a>
+            <a href="https://github.com/kaisen7/painel-dolar" target="_blank" rel="noopener">repositório ↗</a>
+          </div>
+        </li>
 
-<script src="script.js"></script>
+        <li class="projeto" data-revelar>
+          <span class="projeto-num">02</span>
+          <div class="projeto-corpo">
+            <h2 class="projeto-titulo">Simulador de Investimento em Dólar</h2>
+            <p class="projeto-desc">Mostra quanto um aporte mensal em reais viraria em dólar com juros compostos, com gráfico desenhado à mão no Canvas.</p>
+            <p class="projeto-tags">JavaScript · Canvas · Intl</p>
+          </div>
+          <div class="projeto-links">
+            <a href="https://kaisen7.github.io/simulador-investimento-dolar/" target="_blank" rel="noopener">ver projeto ↗</a>
+            <a href="https://github.com/kaisen7/simulador-investimento-dolar" target="_blank" rel="noopener">repositório ↗</a>
+          </div>
+        </li>
+
+        <li class="projeto" data-revelar>
+          <span class="projeto-num">03</span>
+          <div class="projeto-corpo">
+            <h2 class="projeto-titulo">K2 Fitness</h2>
+            <p class="projeto-desc">Site demonstrativo para uma academia de Petrópolis: estrutura, modalidades, horários, avaliações e localização.</p>
+            <p class="projeto-tags">HTML · CSS</p>
+          </div>
+          <div class="projeto-links">
+            <a href="https://kaisen7.github.io/k2-fitness/" target="_blank" rel="noopener">ver projeto ↗</a>
+            <a href="https://github.com/kaisen7/k2-fitness" target="_blank" rel="noopener">repositório ↗</a>
+          </div>
+        </li>
+
+        <!--
+          PARA ADICIONAR UM PROJETO NOVO:
+          copie um <li class="projeto"> de cima, cole aqui e troque
+          o número, o título, a descrição, as tags e os links.
+        -->
+      </ol>
+
+      <!-- Projetos em Python (sem página no ar, só o código) -->
+      <div class="outros" data-revelar>
+        <p class="outros-titulo">também em Python</p>
+        <ul class="outros-lista">
+          <li><a href="https://github.com/kaisen7/vendas-em-foco" target="_blank" rel="noopener">vendas-em-foco ↗</a><span>relatórios de vendas a partir de CSV</span></li>
+          <li><a href="https://github.com/kaisen7/vaga-track" target="_blank" rel="noopener">vaga-track ↗</a><span>organizador de candidaturas com SQLite</span></li>
+          <li><a href="https://github.com/kaisen7/triagem-texto" target="_blank" rel="noopener">triagem-texto ↗</a><span>classificador de mensagens com Naive Bayes</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 4. SERVIÇOS -->
+    <section id="servicos" class="secao servicos" data-cena data-fundo="#E10600" data-brilho="1">
+      <p class="rotulo" data-revelar>(03) serviços</p>
+      <h2 class="servicos-titulo" data-revelar>O que eu faço</h2>
+      <ol class="lista-servicos">
+        <li class="servico" data-revelar>
+          <span class="servico-num">01</span>
+          <h3 class="servico-nome">Criação de sites</h3>
+          <p class="servico-desc">Do zero, com código próprio, rápido e fácil de manter.</p>
+        </li>
+        <li class="servico" data-revelar>
+          <span class="servico-num">02</span>
+          <h3 class="servico-nome">Landing pages</h3>
+          <p class="servico-desc">Uma página, um objetivo: fazer a pessoa clicar.</p>
+        </li>
+        <li class="servico" data-revelar>
+          <span class="servico-num">03</span>
+          <h3 class="servico-nome">Sites para pequenos negócios</h3>
+          <p class="servico-desc">Cardápio, catálogo, horários e WhatsApp num lugar só.</p>
+        </li>
+        <li class="servico" data-revelar>
+          <span class="servico-num">04</span>
+          <h3 class="servico-nome">Sites com elementos 3D</h3>
+          <p class="servico-desc">Como este aqui: interativo, leve e diferente do resto.</p>
+        </li>
+      </ol>
+    </section>
+
+    <!-- 5. CONTATO -->
+    <section id="contato" class="secao escura contato" data-cena data-fundo="#0A0A0A" data-fundo-escuro="#141414" data-brilho="1">
+      <p class="rotulo" data-revelar>(04) contato</p>
+      <p class="contato-frase" data-revelar>
+        Seu negócio merece mais que um <span class="riscado">template</span>.
+      </p>
+      <div class="contato-acoes" data-revelar>
+        <a class="botao-whats" href="https://wa.me/5524988545768" target="_blank" rel="noopener">
+          <span>Chamar no WhatsApp</span><span aria-hidden="true">↗</span>
+        </a>
+        <a class="link-github" href="https://github.com/kaisen7" target="_blank" rel="noopener">github.com/kaisen7 ↗</a>
+        <a class="link-github" href="Curriculo_Kaua_Avenue_2027.pdf" target="_blank" rel="noopener">currículo (PDF) ↗</a>
+      </div>
+
+      <footer class="rodape">
+        <span>© 2026 Kauã de Oliveira Santos</span>
+        <span>feito à mão, linha por linha, em Petrópolis</span>
+      </footer>
+    </section>
+  </main>
+
+  <!--
+    Plano B: se o Three.js/GSAP não carregarem (internet ruim, CDN fora do ar),
+    em 8 segundos a tela de loading some mesmo assim e o site aparece sem o 3D.
+  -->
+  <script>
+    setTimeout(function () {
+      var l = document.getElementById('loader');
+      if (l && !l.classList.contains('loader--saiu')) {
+        l.classList.add('loader--saiu');
+        document.documentElement.classList.add('sem-3d');
+      }
+    }, 8000);
+  </script>
 </body>
 </html>
