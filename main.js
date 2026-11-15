@@ -262,7 +262,10 @@ function iniciarInterface() {
     };
     ScrollTrigger.create({
       trigger: secao,
-      start: 'top bottom',
+      // 'top 75%' (e não 'top bottom'): só começa quando a seção já entrou um pouco na tela.
+      // No iPhone a barra do navegador muda a altura da tela, e com 'top bottom'
+      // a próxima seção "espiava" por baixo e soltava algumas teclas antes da hora.
+      start: 'top 75%',
       end: 'top 20%',
       onUpdate: atualizar,
       onRefresh: atualizar,
